@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Rest", "ShoppingBasket.Rest\ShoppingBasket.Rest.csproj", "{4FE54D7E-5946-450D-8EF4-005630481208}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Application", "ShoppingBasket.Application\ShoppingBasket.Application.csproj", "{5E3262BF-DA06-4C52-BB53-E2D2328D3673}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Domain", "ShoppingBasket.Domain\ShoppingBasket.Domain.csproj", "{BFF6B43C-9184-43A2-964E-840534B78748}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Infrastructure", "ShoppingBasket.Infrastructure\ShoppingBasket.Infrastructure.csproj", "{EAE0FFE0-E2D4-4959-B123-DAC3228DD00C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Infrastructure.Persistence", "ShoppingBasket.Infrastructure.Persistence\ShoppingBasket.Infrastructure.Persistence.csproj", "{D72204B3-561F-457C-A658-F843481BDC49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Core", "ShoppingBasket.Core\ShoppingBasket.Core.csproj", "{D5ACE855-08FF-49AC-9652-F8DECA2B0667}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F334D408-BC42-4315-9A1C-472AF7A54323}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FE54D7E-5946-450D-8EF4-005630481208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE54D7E-5946-450D-8EF4-005630481208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE54D7E-5946-450D-8EF4-005630481208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE54D7E-5946-450D-8EF4-005630481208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3262BF-DA06-4C52-BB53-E2D2328D3673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3262BF-DA06-4C52-BB53-E2D2328D3673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3262BF-DA06-4C52-BB53-E2D2328D3673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3262BF-DA06-4C52-BB53-E2D2328D3673}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF6B43C-9184-43A2-964E-840534B78748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF6B43C-9184-43A2-964E-840534B78748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF6B43C-9184-43A2-964E-840534B78748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF6B43C-9184-43A2-964E-840534B78748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE0FFE0-E2D4-4959-B123-DAC3228DD00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE0FFE0-E2D4-4959-B123-DAC3228DD00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE0FFE0-E2D4-4959-B123-DAC3228DD00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE0FFE0-E2D4-4959-B123-DAC3228DD00C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72204B3-561F-457C-A658-F843481BDC49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72204B3-561F-457C-A658-F843481BDC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72204B3-561F-457C-A658-F843481BDC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72204B3-561F-457C-A658-F843481BDC49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5ACE855-08FF-49AC-9652-F8DECA2B0667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5ACE855-08FF-49AC-9652-F8DECA2B0667}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5ACE855-08FF-49AC-9652-F8DECA2B0667}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5ACE855-08FF-49AC-9652-F8DECA2B0667}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
