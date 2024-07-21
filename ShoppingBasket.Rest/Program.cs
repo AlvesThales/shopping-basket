@@ -1,10 +1,12 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using ShoppingBasket.Application;
 using ShoppingBasket.Configurations;
 using ShoppingBasket.Domain.Entities;
 using ShoppingBasket.Infrastructure;
 using OpenTelemetry.Metrics;
 using Serilog;
+using ShoppingBasket.Infrastructure.Persistence.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -58,5 +60,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapIdentityApi<Customer>();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 
 app.Run();
