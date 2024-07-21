@@ -1,0 +1,26 @@
+﻿services:
+  shoppingbasket.rest:
+    image: shoppingbasket.rest
+    build:
+      context: .
+      dockerfile: ShoppingBasket.Rest/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+        - dev-network       
+  db:
+    container_name: shopping-basket-db
+    image: "postgres:latest"
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "shopping_basket"
+    ports:
+      - "5432:5432"
+    networks:
+      - dev-network
+
+networks:
+  dev-network:

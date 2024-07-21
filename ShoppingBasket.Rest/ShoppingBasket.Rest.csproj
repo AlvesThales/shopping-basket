@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>false</InvariantGlobalization>
-        <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <UserSecretsId>1fef4ab7-68bd-46e1-936c-7a94b2e3d5g9</UserSecretsId>
         <RootNamespace>ShoppingBasket</RootNamespace>
@@ -35,5 +35,11 @@
     <ItemGroup>
       <ProjectReference Include="..\ShoppingBasket.Application\ShoppingBasket.Application.csproj" />
       <ProjectReference Include="..\ShoppingBasket.Infrastructure\ShoppingBasket.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 </Project>
