@@ -12,7 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<Customer>
     {
     }
     
-    public DbSet<Order> Orders { get; set; }
+    public DbSet<Basket> Orders { get; set; }
     public DbSet<Customer> Customer { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<StoredEvent> StoredEvents { get; set; }

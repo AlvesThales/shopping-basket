@@ -3,42 +3,42 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.Application.Interfaces;
-using ShoppingBasket.Application.ViewModels.OrderViewModels;
+using ShoppingBasket.Application.ViewModels.BasketViewModels;
 using ShoppingBasket.Domain.Common;
 using ShoppingBasket.Domain.Common.Interfaces;
 using ShoppingBasket.Domain.Entities;
 
 namespace ShoppingBasket.Controllers;
 [Route("orders")]
-public class OrderController : ApiController
+public class BasketController : ApiController
 {
-    private readonly IOrderService _orderService;
+    private readonly IBasketService _basketService;
     private readonly UserManager<Customer> _userManager;
 
-    public OrderController(IOrderService orderService,IMediatorHandler mediator,
+    public BasketController(IBasketService basketService,IMediatorHandler mediator,
         INotificationHandler<DomainNotification> notifications, UserManager<Customer> userManager)
     {
-        _orderService = orderService;
+        _basketService = basketService;
         _userManager = userManager;
     }
     
     /// <summary>
     /// Create an order
     /// </summary>
-    /// <param name="createOrderInput"></param>
+    /// <param name="createBasketInput"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [ProducesResponseType(typeof(CreateOrderOutput),201)]
-    [ProducesResponseType(typeof(CreateOrderOutput),400)]
-    [ProducesResponseType(typeof(CreateOrderOutput),500)]
-    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderInput createOrderInput, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(CreateBasketOutput),201)]
+    [ProducesResponseType(typeof(CreateBasketOutput),400)]
+    [ProducesResponseType(typeof(CreateBasketOutput),500)]
+    public async Task<IActionResult> CreateOrder([FromBody] CreateBasketInput createBasketInput, CancellationToken cancellationToken)
     {
         var user = await _userManager.GetUserAsync(User);
         var userId = user!.Id;
 
-        var result = await _orderService.CreateOrder(userId, createOrderInput,cancellationToken);
+        var result = await _basketService.CreateBasket(userId, createBasketInput,cancellationToken);
         return Created(result);
     }
 
@@ -49,10 +49,10 @@ public class OrderController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(GetOrderSimple),200)]
-    public async Task<IActionResult> GetOrderById([FromRoute] Guid id, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(GetBasketSimple),200)]
+    public async Task<IActionResult> GetBasketById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var result = await _orderService.GetOrder(id, cancellationToken);
+        var result = await _basketService.GetBasketById(id, cancellationToken);
         return Ok(result);
     }
 
@@ -63,10 +63,10 @@ public class OrderController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(typeof(GetOrderSimple), 200)]
-    public async Task<IActionResult> GetOrders(CancellationToken cancellationToken, [FromQuery] bool? isPaid = null)
+    [ProducesResponseType(typeof(GetBasketSimple), 200)]
+    public async Task<IActionResult> GetBaskets(CancellationToken cancellationToken, [FromQuery] bool? isPaid = null)
     {
-        var result = await _orderService.GetOrders(isPaid, cancellationToken);
+        var result = await _basketService.GetBaskets(isPaid, cancellationToken);
         return Ok(result);
     }
 
@@ -76,12 +76,12 @@ public class OrderController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("{id:guid}/pay")]
-    [ProducesResponseType(typeof(CreateOrderOutput), 201)]
-    [ProducesResponseType(typeof(CreateOrderOutput), 400)]
-    [ProducesResponseType(typeof(CreateOrderOutput), 500)]
+    [ProducesResponseType(typeof(CreateBasketOutput), 201)]
+    [ProducesResponseType(typeof(CreateBasketOutput), 400)]
+    [ProducesResponseType(typeof(CreateBasketOutput), 500)]
     public async Task<IActionResult> Pay([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var result = await _orderService.PayOrder(id, cancellationToken);
+        var result = await _basketService.PayBasket(id, cancellationToken);
         return Created(result);
     }
 
@@ -92,12 +92,12 @@ public class OrderController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(typeof(CreateOrderOutput), 204)]
-    [ProducesResponseType(typeof(CreateOrderOutput), 400)]
-    [ProducesResponseType(typeof(CreateOrderOutput), 500)]
+    [ProducesResponseType(typeof(CreateBasketOutput), 204)]
+    [ProducesResponseType(typeof(CreateBasketOutput), 400)]
+    [ProducesResponseType(typeof(CreateBasketOutput), 500)]
     public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var result = await _orderService.DeleteOrder(id, cancellationToken);
+        var result = await _basketService.DeleteBasket(id, cancellationToken);
         return NoContent(result);
     }
 
@@ -105,16 +105,16 @@ public class OrderController : ApiController
     /// Update an order
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="updateOrderInput"></param>
+    /// <param name="updateBasketInput"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(UpdateOrderOutput), 200)]
-    [ProducesResponseType(typeof(UpdateOrderOutput), 400)]
-    [ProducesResponseType(typeof(UpdateOrderOutput), 500)]
-    public async Task<IActionResult> UpdateOrder([FromRoute] Guid id, [FromBody] UpdateOrderInput updateOrderInput, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(UpdateBasketOutput), 200)]
+    [ProducesResponseType(typeof(UpdateBasketOutput), 400)]
+    [ProducesResponseType(typeof(UpdateBasketOutput), 500)]
+    public async Task<IActionResult> UpdateOrder([FromRoute] Guid id, [FromBody] UpdateBasketInput updateBasketInput, CancellationToken cancellationToken)
     {
-        var result = await _orderService.UpdateOrder(id, updateOrderInput, cancellationToken);
+        var result = await _basketService.UpdateBasket(id, updateBasketInput, cancellationToken);
         return Ok(result);
     }
 }

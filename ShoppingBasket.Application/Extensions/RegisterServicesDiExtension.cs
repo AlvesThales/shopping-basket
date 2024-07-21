@@ -7,7 +7,7 @@ internal static class RegisterServicesDiExtension
 {
     public static IServiceCollection RegisterServicesInjection(this IServiceCollection services)
     {
-        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IBasketService, BasketService>();
         services.AddScoped<IProductService, ProductService>();
         return services;
     }

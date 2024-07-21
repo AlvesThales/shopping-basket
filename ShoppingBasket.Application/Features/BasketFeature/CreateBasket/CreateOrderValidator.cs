@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace ShoppingBasket.Application.Features.OrderFeature.CreateOrder;
+namespace ShoppingBasket.Application.Features.BasketFeature.CreateBasket;
 
-public class CreateOrderValidator: AbstractValidator<CreateOrderCommand>
+public class CreateOrderValidator: AbstractValidator<CreateBasketCommand>
 {
     public CreateOrderValidator()
     {

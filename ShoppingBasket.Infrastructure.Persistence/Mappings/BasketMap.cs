@@ -5,9 +5,9 @@ using ShoppingBasket.Domain.Entities;
 namespace ShoppingBasket.Infrastructure.Persistence.Mappings
 {
 
-    class OrderMap : IEntityTypeConfiguration<Order>
+    class BasketMap : IEntityTypeConfiguration<Basket>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<Basket> builder)
         {
             //builder.HasOne(o => o.Customer)
             //    .WithMany(c => c.Orders)

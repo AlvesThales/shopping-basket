@@ -8,7 +8,7 @@ internal static class RepositoryDependencyInjectionExtension
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         return services
-            .AddScoped<IOrderRepository, OrderRepository>()
+            .AddScoped<IBasketRepository, BasketRepository>()
             .AddScoped<IProductRepository, ProductRepository>()
             .AddScoped<IEventStoreRepository, EventStoreRepository>();
     }

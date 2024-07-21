@@ -3,10 +3,10 @@ using ShoppingBasket.Domain.Common;
 
 namespace ShoppingBasket.Domain.Entities;
 
-public class Order : AuditableEntity
+public class Basket : AuditableEntity
 {
     public virtual Customer Customer { get; set; }
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public virtual ICollection<BasketItem> BasketItems { get; set; } = new List<BasketItem>();
     public bool IsPaid { get; set; }
     public decimal PaidAmount { get; set; }
     public bool IsDeleted { get; set; }
@@ -14,33 +14,33 @@ public class Order : AuditableEntity
     [NotMapped]
     public decimal TotalPrice
     {
-        get { return OrderItems.Sum(o => o.UnitPrice * o.Amount); }
+        get { return BasketItems.Sum(o => o.UnitPrice * o.Amount); }
     }
 
-    public Order()
+    public Basket()
     {
     }
 
-    public Order(Customer customer, ICollection<OrderItem> orderItems, bool isPaid, bool isDeleted)
+    public Basket(Customer customer, ICollection<BasketItem> basketItems, bool isPaid, bool isDeleted)
     {
         Customer = customer;
-        OrderItems = orderItems;
+        BasketItems = basketItems;
         IsPaid = isPaid;
         IsDeleted = isDeleted;
     }
 
-    public void UpdateOrderItems(ICollection<OrderItem> orderItems)
+    public void UpdateBasketItems(ICollection<BasketItem> basketItems)
     {
         if (IsPaid)
         {
-            throw new InvalidOperationException("OrderAlreadyPaid");
+            throw new InvalidOperationException("BasketAlreadyPaid");
         }
 
-        OrderItems.Clear();
+        BasketItems.Clear();
 
-        foreach (var item in orderItems)
+        foreach (var item in basketItems)
         {
-            OrderItems.Add(item);
+            BasketItems.Add(item);
         }
     }
 
