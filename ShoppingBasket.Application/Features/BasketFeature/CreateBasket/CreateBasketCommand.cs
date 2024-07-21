@@ -76,6 +76,15 @@ public class CreateBasketCommandHandler : CommandHandler, IRequestHandler<Create
         _logger.LogDebug("Start creating a basket from customer {CustomerName}", request.CustomerId);
 
         var basket = new Basket(customer, basketItems, false, false);
+        
+        var discounts = new List<Discount>
+        {
+            new PercentageDiscount("Apples", 0.10m),
+            new MultiBuyDiscount("Soup", 2, "Bread", 0.50m)
+        };
+        
+        basket.ApplyDiscounts(discounts);
+        
         await _basketRepository.AddAsync(basket, cancellationToken);
 
         if (!await Commit(cancellationToken))

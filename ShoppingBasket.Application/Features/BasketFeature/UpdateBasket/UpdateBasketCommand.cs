@@ -77,6 +77,14 @@ public class UpdateBasketCommandHandler : CommandHandler, IRequestHandler<Update
         try
         {
             basket.UpdateBasketItems(basketItems);
+            
+            var discounts = new List<Discount>
+            {
+                new PercentageDiscount("Apples", 0.10m),
+                new MultiBuyDiscount("Soup", 2, "Bread", 0.50m)
+            };
+        
+            basket.ApplyDiscounts(discounts);
         }
         catch (Exception ex)
         {
