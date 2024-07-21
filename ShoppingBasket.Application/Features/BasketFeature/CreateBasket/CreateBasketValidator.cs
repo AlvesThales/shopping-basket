@@ -2,12 +2,12 @@
 
 namespace ShoppingBasket.Application.Features.BasketFeature.CreateBasket;
 
-public class CreateOrderValidator: AbstractValidator<CreateBasketCommand>
+public class CreateBasketValidator: AbstractValidator<CreateBasketCommand>
 {
-    public CreateOrderValidator()
+    public CreateBasketValidator()
     {
         ValidateCustomerId();
-        ValidateOrderItems();
+        ValidateBasketItems();
     }
 
 
@@ -16,9 +16,9 @@ public class CreateOrderValidator: AbstractValidator<CreateBasketCommand>
         RuleFor(c => c.CustomerId)
             .NotEmpty();
     }
-    private void ValidateOrderItems()
+    private void ValidateBasketItems()
     {
-        RuleFor(c => c.OrderItems)
+        RuleFor(c => c.BasketItems)
             .NotEmpty();
     }
 }

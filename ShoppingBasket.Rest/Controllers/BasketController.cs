@@ -9,7 +9,7 @@ using ShoppingBasket.Domain.Common.Interfaces;
 using ShoppingBasket.Domain.Entities;
 
 namespace ShoppingBasket.Controllers;
-[Route("orders")]
+[Route("baskets")]
 public class BasketController : ApiController
 {
     private readonly IBasketService _basketService;
@@ -23,7 +23,7 @@ public class BasketController : ApiController
     }
     
     /// <summary>
-    /// Create an order
+    /// Create a basket
     /// </summary>
     /// <param name="createBasketInput"></param>
     /// <param name="cancellationToken"></param>
@@ -33,7 +33,7 @@ public class BasketController : ApiController
     [ProducesResponseType(typeof(CreateBasketOutput),201)]
     [ProducesResponseType(typeof(CreateBasketOutput),400)]
     [ProducesResponseType(typeof(CreateBasketOutput),500)]
-    public async Task<IActionResult> CreateOrder([FromBody] CreateBasketInput createBasketInput, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateBasket([FromBody] CreateBasketInput createBasketInput, CancellationToken cancellationToken)
     {
         var user = await _userManager.GetUserAsync(User);
         var userId = user!.Id;
@@ -43,7 +43,7 @@ public class BasketController : ApiController
     }
 
     /// <summary>
-    /// Get a specific order
+    /// Get a specific basket
     /// </summary>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
@@ -57,7 +57,7 @@ public class BasketController : ApiController
     }
 
     /// <summary>
-    /// Get all orders
+    /// Get all baskets
     /// </summary>
     /// <param name="isPaid"></param>
     /// <param name="cancellationToken"></param>
@@ -71,7 +71,7 @@ public class BasketController : ApiController
     }
 
     /// <summary>
-    /// Pay for an order
+    /// Pay for a basket
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
@@ -86,7 +86,7 @@ public class BasketController : ApiController
     }
 
     /// <summary>
-    /// Pay for an order
+    /// Delete a basket
     /// </summary>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
@@ -102,7 +102,7 @@ public class BasketController : ApiController
     }
 
     /// <summary>
-    /// Update an order
+    /// Update a basket
     /// </summary>
     /// <param name="id"></param>
     /// <param name="updateBasketInput"></param>
@@ -112,7 +112,7 @@ public class BasketController : ApiController
     [ProducesResponseType(typeof(UpdateBasketOutput), 200)]
     [ProducesResponseType(typeof(UpdateBasketOutput), 400)]
     [ProducesResponseType(typeof(UpdateBasketOutput), 500)]
-    public async Task<IActionResult> UpdateOrder([FromRoute] Guid id, [FromBody] UpdateBasketInput updateBasketInput, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateBasket([FromRoute] Guid id, [FromBody] UpdateBasketInput updateBasketInput, CancellationToken cancellationToken)
     {
         var result = await _basketService.UpdateBasket(id, updateBasketInput, cancellationToken);
         return Ok(result);

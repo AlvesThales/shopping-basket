@@ -15,7 +15,7 @@ internal static class RegisterCommandsQueriesDiExtension
 {
     public static IServiceCollection RegisterCommandsQueriesInjection(this IServiceCollection services)
     {
-        services.AddScoped<IRequestHandler<CreateBasketCommand, Result<Basket>>, CreateOrderCommandHandler>();
+        services.AddScoped<IRequestHandler<CreateBasketCommand, Result<Basket>>, CreateBasketCommandHandler>();
         services.AddScoped<IRequestHandler<PayBasketCommand, Result<Basket>>, PayBasketCommandHandler>();
         services.AddScoped<IRequestHandler<UpdateBasketCommand, Result<Basket>>, UpdateBasketCommandHandler>();
         services.AddScoped<IRequestHandler<DeleteBasketCommand, Result<Unit>>, DeleteBasketCommandHandler>();

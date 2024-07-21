@@ -6,7 +6,7 @@ namespace ShoppingBasket.Domain.Entities;
 public class BasketItem : AuditableEntity
 {
     public Basket Basket { get; set; } = null;
-    public Guid OrderId { get; set; }
+    public Guid BasketId { get; set; }
     public Product Product { get; set; }
     public Guid ProductId { get; set; }
     public decimal UnitPrice { get; set; }

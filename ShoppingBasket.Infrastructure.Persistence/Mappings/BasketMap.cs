@@ -9,12 +9,6 @@ namespace ShoppingBasket.Infrastructure.Persistence.Mappings
     {
         public void Configure(EntityTypeBuilder<Basket> builder)
         {
-            //builder.HasOne(o => o.Customer)
-            //    .WithMany(c => c.Orders)
-            //    .HasForeignKey(o => o.CustomerId)
-            //    .OnDelete(DeleteBehavior.Restrict)
-            //    .IsRequired();
-
             builder.Property(c => c.IsPaid)
                 .IsRequired();
 

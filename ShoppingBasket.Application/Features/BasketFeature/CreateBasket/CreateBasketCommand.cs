@@ -13,31 +13,31 @@ namespace ShoppingBasket.Application.Features.BasketFeature.CreateBasket;
 public class CreateBasketCommand : Command, IRequest<Result<Basket>>
 {
     public string CustomerId { get; private set; }
-    public virtual ICollection<CreateBasketItemInput> OrderItems { get; private set; }
+    public virtual ICollection<CreateBasketItemInput> BasketItems { get; private set; }
 
-    public CreateBasketCommand(string customerId, ICollection<CreateBasketItemInput> orderItems)
+    public CreateBasketCommand(string customerId, ICollection<CreateBasketItemInput> basketItems)
     {
         CustomerId = customerId;
-        OrderItems = orderItems;
+        BasketItems = basketItems;
     }
 
     public override bool IsValid()
     {
-        ValidationResult = new CreateOrderValidator().Validate(this);
+        ValidationResult = new CreateBasketValidator().Validate(this);
         return ValidationResult.IsValid;
     }
 }
 
 
-public class CreateOrderCommandHandler : CommandHandler, IRequestHandler<CreateBasketCommand, Result<Basket>>
+public class CreateBasketCommandHandler : CommandHandler, IRequestHandler<CreateBasketCommand, Result<Basket>>
 {
-    private readonly ILogger<CreateOrderCommandHandler> _logger;
+    private readonly ILogger<CreateBasketCommandHandler> _logger;
     private readonly IMediatorHandler _bus;
     private readonly IBasketRepository _basketRepository;
     private readonly IProductRepository _productRepository;
     private readonly UserManager<Customer> _userManager;
 
-    public CreateOrderCommandHandler(ILogger<CreateOrderCommandHandler> logger, IUnitOfWork uow, IMediatorHandler bus,
+    public CreateBasketCommandHandler(ILogger<CreateBasketCommandHandler> logger, IUnitOfWork uow, IMediatorHandler bus,
         INotificationHandler<DomainNotification> notifications,IBasketRepository basketRepository, IProductRepository productRepository, UserManager<Customer> userManager) : base(logger,uow, bus,notifications)
     {
         _logger = logger;
@@ -61,28 +61,28 @@ public class CreateOrderCommandHandler : CommandHandler, IRequestHandler<CreateB
             return NotifyError(GenericErrors.ErrorSaving, "Customer Not Found", ErrorTypes.BadRequest);
         }
 
-        var orderItems = new List<BasketItem>();
+        var basketItems = new List<BasketItem>();
 
-        foreach (var item in request.OrderItems) 
+        foreach (var item in request.BasketItems) 
         {
             var product = await _productRepository.GetByIdAsync(item.ProductId);
             if (product == null)
             {
                 return NotifyError(GenericErrors.ErrorSaving, $"Product with Id {item.ProductId} Not Found", ErrorTypes.BadRequest);
             }
-            orderItems.Add(new BasketItem(product, product.Price, item.Amount));
+            basketItems.Add(new BasketItem(product, product.Price, item.Amount));
         }
 
-        _logger.LogDebug("Start creating an order from customer {CustomerName}", request.CustomerId);
+        _logger.LogDebug("Start creating a basket from customer {CustomerName}", request.CustomerId);
 
-        var order = new Basket(customer, orderItems, false, false);
-        await _basketRepository.AddAsync(order, cancellationToken);
+        var basket = new Basket(customer, basketItems, false, false);
+        await _basketRepository.AddAsync(basket, cancellationToken);
 
         if (!await Commit(cancellationToken))
         {
             return NotifyError(GenericErrors.ErrorSaving, "Error while saving", ErrorTypes.ServerError);
         }
 
-        return order;
+        return basket;
     }
 }

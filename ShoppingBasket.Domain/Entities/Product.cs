@@ -4,7 +4,7 @@ namespace ShoppingBasket.Domain.Entities;
 
 public class Product : AuditableEntity
 {
-    public virtual ICollection<BasketItem> OrderItem { get; set; } = new List<BasketItem>();
+    public virtual ICollection<BasketItem> BasketItem { get; set; } = new List<BasketItem>();
     public string Name { get; set; }
     public Decimal Price { get; set; }
 
