@@ -9,11 +9,7 @@ public class GetBasketItemInBasket
     public decimal UnitPrice { get; set; }
     public int Amount { get; set; }
     public decimal TotalDiscount { get; set; }
-
-    [NotMapped]
     public decimal OriginalPrice => UnitPrice * Amount;
-    
-    [NotMapped]
     public decimal DiscountedPrice => OriginalPrice - TotalDiscount;
 
     public GetBasketItemInBasket()
