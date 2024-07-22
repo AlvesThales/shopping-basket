@@ -72,7 +72,7 @@ public class PayBasketCommandHandler : CommandHandler, IRequestHandler<PayBasket
 
     private static void Pay(Basket? basket)
     {
-        basket.PaidAmount = basket.TotalPrice;
+        basket.PaidAmount = basket.TotalBasketDiscountedPrice;
         basket.IsPaid = true;
     }
 }

@@ -10,8 +10,11 @@ public class BasketItem : AuditableEntity
     public Product Product { get; set; }
     public Guid ProductId { get; set; }
     public decimal UnitPrice { get; set; }
-    public decimal Discount { get; set; }
     public int Amount { get; set; }
+    public decimal Discount { get; set; }
+    public decimal OriginalPrice => UnitPrice * Amount;
+    public decimal TotalDiscount { get; set; }
+    public decimal DiscountedPrice => (OriginalPrice - TotalDiscount);
 
     public BasketItem()
     {

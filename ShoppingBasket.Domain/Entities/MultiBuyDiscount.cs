@@ -17,20 +17,24 @@ public class MultiBuyDiscount : Discount
 
     public override void ApplyDiscount(Basket basket)
     {
-        var productCount = basket.BasketItems.Where(i => i.Product.Name == _productName).Sum(i => i.Amount);
-        var discountedItems = basket.BasketItems.Where(i => i.Product.Name == _discountedProductName).ToList();
+        // Calculate the total quantity of the required product
+        var productCount = basket.BasketItems
+            .Where(i => i.Product.Name == _productName)
+            .Sum(i => i.Amount);
 
-        foreach (var item in discountedItems)
+        // Get the single item eligible for the discount
+        var discountedItem = basket.BasketItems
+            .FirstOrDefault(i => i.Product.Name == _discountedProductName);
+
+        if (discountedItem != null)
         {
-            if (productCount >= _requiredAmount)
-            {
-                item.Discount = item.UnitPrice * _discountPercentage;
-                productCount -= _requiredAmount;
-            }
-            else
-            {
-                item.Discount = 0;
-            }
+            // Calculate the number of discounted items based on the available quantity of the required product
+            var discountableQuantity = productCount / _requiredAmount;
+
+            // Apply the discount to the eligible quantity
+            discountedItem.TotalDiscount = discountedItem.UnitPrice * _discountPercentage * Math.Min(discountableQuantity, discountedItem.Amount);
         }
     }
+
+
 }

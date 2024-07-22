@@ -10,12 +10,14 @@ public class Basket : AuditableEntity
     public bool IsPaid { get; set; }
     public decimal PaidAmount { get; set; }
     public bool IsDeleted { get; set; }
-    
-    [NotMapped]
-    public decimal TotalPrice
+    public decimal TotalBasketOriginalPrice
     {
-        get { return BasketItems.Sum(b => (b.UnitPrice - b.Discount) * b.Amount); }
+        get { return BasketItems.Sum(b => b.OriginalPrice); }
     }
+    public decimal TotalBasketDiscountedPrice
+    {
+        get { return BasketItems.Sum(b => b.DiscountedPrice); }
+    }   
 
     public Basket()
     {
@@ -46,7 +48,7 @@ public class Basket : AuditableEntity
 
     public void Pay()
     {
-        PaidAmount = TotalPrice;
+        PaidAmount = TotalBasketDiscountedPrice;
         IsPaid = true;
     }
     

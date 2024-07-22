@@ -15,7 +15,7 @@ public class PercentageDiscount : Discount
     {
         foreach (var item in basket.BasketItems.Where(i => i.Product.Name == _productName))
         {
-            item.Discount = item.UnitPrice * _percentage;
+            item.TotalDiscount = item.UnitPrice * _percentage * item.Amount;
         }
     }
 }

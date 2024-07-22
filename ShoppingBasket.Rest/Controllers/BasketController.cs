@@ -29,16 +29,16 @@ public class BasketController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    // [Authorize(AuthenticationSchemes = "Bearer")]
     [ProducesResponseType(typeof(CreateBasketOutput),201)]
     [ProducesResponseType(typeof(CreateBasketOutput),400)]
     [ProducesResponseType(typeof(CreateBasketOutput),500)]
     public async Task<IActionResult> CreateBasket([FromBody] CreateBasketInput createBasketInput, CancellationToken cancellationToken)
     {
-        var user = await _userManager.GetUserAsync(User);
-        var userId = user!.Id;
+        // var user = await _userManager.GetUserAsync(User);
+        // var userId = user!.Id;
 
-        var result = await _basketService.CreateBasket(userId, createBasketInput,cancellationToken);
+        var result = await _basketService.CreateBasket(createBasketInput.CustomerId.ToString(), createBasketInput,cancellationToken);
         return Created(result);
     }
 

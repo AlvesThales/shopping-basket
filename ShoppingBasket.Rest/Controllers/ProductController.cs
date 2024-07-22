@@ -18,7 +18,7 @@ public class ProductController : ApiController
     }
     
     /// <summary>
-    /// Create an product
+    /// Create a product
     /// </summary>
     /// <param name="createProductInput"></param>
     /// <param name="cancellationToken"></param>
