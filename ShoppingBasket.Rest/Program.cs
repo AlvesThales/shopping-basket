@@ -49,12 +49,25 @@ builder.Services.AddOpenTelemetry()
             });
     });
     
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // App configuration of swagger
 app.AppSwaggerConfiguration();
 
 app.MapPrometheusScrapingEndpoint();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
@@ -73,8 +86,7 @@ using (var scope = app.Services.CreateScope())
         {
             context.Database.Migrate();
         }
-
-        // Call the seed method
+        
         DbInitializer.Initialize(context);
     }
     catch (Exception ex)
