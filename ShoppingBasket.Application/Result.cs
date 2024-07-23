@@ -28,6 +28,7 @@ public readonly struct Result<TValue>
     public static bool operator true(Result<TValue> result) => result.IsSuccess;
     public static bool operator false(Result<TValue> result) => !result.IsSuccess;
 
+    public TValue? GetValue() => _value;
 
     public TResult Match<TResult>(
         Func<TValue, TResult> success,

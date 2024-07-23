@@ -9,6 +9,7 @@ internal static class RegisterServicesDiExtension
     {
         services.AddScoped<IBasketService, BasketService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IDiscountService, DiscountService>();
         return services;
     }
 }

@@ -1,8 +1,8 @@
 # Shopping Basket
 An API to manage a shopping basket. <br>
-It is possible to create, retrieve, update and delete a questionnaire, it's questions and answers. <br>
-This project was developed using .NET Core 7.0 and Entity Framework Core 7.0.9. <br>
-The api depends on a SQL Server database (included in the docker-compose).
+It is possible to create, retrieve, update and delete products and baskets.
+This project was developed using .NET Core 8.0 and Entity Framework Core 8.0.0. <br>
+The api depends on a Postgres database (included in the docker-compose).
 
 ## Installing / Getting started
 To run this application you will need Docker and Docker-compose. Go to the root directory of the solution (where docker-compose.yml is) and execute the command:
