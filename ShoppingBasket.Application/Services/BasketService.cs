@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ShoppingBasket.Application.Features.BasketFeature.CreateBasket;
 using ShoppingBasket.Application.Features.BasketFeature.DeleteBasket;
-using ShoppingBasket.Application.Features.BasketFeature.GetBasket;
+using ShoppingBasket.Application.Features.BasketFeature.GetBasketById;
 using ShoppingBasket.Application.Features.BasketFeature.GetBaskets;
 using ShoppingBasket.Application.Features.BasketFeature.PayBasket;
 using ShoppingBasket.Application.Features.BasketFeature.UpdateBasket;
@@ -54,15 +54,16 @@ public class BasketService : IBasketService
 
     public async Task<Result<GetBasketSimple>> GetBasketById(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetBasketQuery(id);
+        var query = new GetBasketByIdQuery(id);
         var response = await _bus.SendCommand(query, cancellationToken);
         return response.Match<Result<GetBasketSimple>>(
             basket => _mapper.BasketToBasketOutput(basket),
             error => error);
     }
-    public async Task<Result<ICollection<GetBasketSimple>>> GetBaskets(bool? isPaid, CancellationToken cancellationToken)
+    public async Task<Result<ICollection<GetBasketSimple>>> GetBaskets(bool? isPaid, string userId,
+        CancellationToken cancellationToken)
     {
-        var query = new GetBasketsQuery(isPaid);
+        var query = new GetBasketsQuery(isPaid, userId);
         var response = await _bus.SendCommand(query, cancellationToken);
         return response.Match<Result<ICollection<GetBasketSimple>>>(
             baskets => baskets.Select(basket => _mapper.BasketToBasketOutput(basket)).ToList(),

@@ -32,14 +32,16 @@ internal class BasketRepository : Repository<Basket>, IBasketRepository
                     .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Result<ICollection<Basket>>> GetAllWithBasketItemsAsync(bool? isPaid, CancellationToken cancellationToken)
+    public async Task<Result<ICollection<Basket>>> GetAllWithBasketItemsAsync(string userId, bool? isPaid,
+        CancellationToken cancellationToken)
     {
         return await _dbSet
-            .Where(basket => !isPaid.HasValue || basket.IsPaid == isPaid.Value)
-            .Where(basket => basket.IsDeleted == false)
             .Include(basket => basket.Customer)
             .Include(basket => basket.BasketItems)
                 .ThenInclude(basketItem => basketItem.Product)
+            .Where(basket => !isPaid.HasValue || basket.IsPaid == isPaid.Value)
+            .Where(basket => basket.IsDeleted == false)
+            .Where(basket => basket.Customer.Id.Equals(userId))
             .ToListAsync(cancellationToken);
     }
 }

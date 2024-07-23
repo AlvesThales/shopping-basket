@@ -11,9 +11,11 @@ namespace ShoppingBasket.Application.Features.BasketFeature.GetBaskets;
 public class GetBasketsQuery: IRequest<Result<ICollection<Basket>>>
 {
     public bool? IsPaid { get; set; }
+    public string UserId { get; set; }
 
-    public GetBasketsQuery(bool? isPaid)
+    public GetBasketsQuery(bool? isPaid, string userId)
     {
+        UserId = userId;
         IsPaid = isPaid;
     }
 }
@@ -34,6 +36,6 @@ public class GetBasketsQueryHandler : QueryHandler,IRequestHandler<GetBasketsQue
     
     public async Task<Result<ICollection<Basket>>> Handle(GetBasketsQuery request, CancellationToken cancellationToken)
     {
-        return await _basketRepository.GetAllWithBasketItemsAsync(request.IsPaid, cancellationToken);
+        return await _basketRepository.GetAllWithBasketItemsAsync(request.UserId, request.IsPaid, cancellationToken);
     }
 }

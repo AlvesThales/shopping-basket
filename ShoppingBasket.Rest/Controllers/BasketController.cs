@@ -29,16 +29,15 @@ public class BasketController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    // [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Identity.Bearer")]
     [ProducesResponseType(typeof(CreateBasketOutput),201)]
     [ProducesResponseType(typeof(CreateBasketOutput),400)]
     [ProducesResponseType(typeof(CreateBasketOutput),500)]
     public async Task<IActionResult> CreateBasket([FromBody] CreateBasketInput createBasketInput, CancellationToken cancellationToken)
     {
-        // var user = await _userManager.GetUserAsync(User);
-        // var userId = user!.Id;
-
-        var result = await _basketService.CreateBasket(createBasketInput.CustomerId.ToString(), createBasketInput,cancellationToken);
+        var user = await _userManager.GetUserAsync(User);
+        var userId = user!.Id;
+        var result = await _basketService.CreateBasket(userId, createBasketInput, cancellationToken);
         return Created(result);
     }
 
@@ -63,10 +62,13 @@ public class BasketController : ApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet]
+    [Authorize(AuthenticationSchemes = "Identity.Bearer")]
     [ProducesResponseType(typeof(GetBasketSimple), 200)]
     public async Task<IActionResult> GetBaskets(CancellationToken cancellationToken, [FromQuery] bool? isPaid = null)
     {
-        var result = await _basketService.GetBaskets(isPaid, cancellationToken);
+        var user = await _userManager.GetUserAsync(User);
+        var userId = user!.Id;
+        var result = await _basketService.GetBaskets(isPaid, userId, cancellationToken);
         return Ok(result);
     }
 
