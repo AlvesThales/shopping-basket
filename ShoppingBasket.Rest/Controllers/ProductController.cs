@@ -43,7 +43,20 @@ public class ProductController : ApiController
     [ProducesResponseType(typeof(GetProductSimple),200)]
     public async Task<IActionResult> GetProductById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var result = await _productService.GetProduct(id,cancellationToken);
+        var result = await _productService.GetProductById(id,cancellationToken);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Get all products
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(GetProductSimple), 200)]
+    public async Task<IActionResult> GetProducts(CancellationToken cancellationToken)
+    {
+        var result = await _productService.GetProducts(cancellationToken);
         return Ok(result);
     }
 }

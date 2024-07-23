@@ -5,5 +5,5 @@ namespace ShoppingBasket.Application.Interfaces.Repositories;
 
 public interface IProductRepository : IGenericRepository<Product>
 {
-    Task<PaginatedIEnumerable<Product>> GetProducts();
+    Task<Result<ICollection<Product>>> GetProductsAsync(CancellationToken cancellationToken);
 }

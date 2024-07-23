@@ -6,7 +6,7 @@ public class CreateBasketValidator: AbstractValidator<CreateBasketCommand>
 {
     public CreateBasketValidator()
     {
-        ValidateCustomerId();
+        //ValidateCustomerId();
         ValidateBasketItems();
     }
 

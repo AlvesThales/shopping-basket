@@ -1,5 +1,6 @@
 ﻿using ShoppingBasket.Application.Features.ProductFeature.CreateProduct;
-using ShoppingBasket.Application.Features.ProductFeature.GetProduct;
+using ShoppingBasket.Application.Features.ProductFeature.GetProductById;
+using ShoppingBasket.Application.Features.ProductFeature.GetProducts;
 using ShoppingBasket.Application.Interfaces;
 using ShoppingBasket.Application.Mappings;
 using ShoppingBasket.Application.ViewModels.ProductViewModels;
@@ -28,12 +29,23 @@ public class ProductService : IProductService
             error => error);
     }
 
-    public async Task<Result<GetProductSimple>> GetProduct(Guid id, CancellationToken cancellationToken)
+    public async Task<Result<GetProductSimple>> GetProductById(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetProductQuery(id);
+        var query = new GetProductByIdQuery(id);
         var response = await _bus.SendCommand(query, cancellationToken);
         return response.Match<Result<GetProductSimple>>(
             product => _mapper.ProductToProductOutput(product),
             error => error);
     }
+    
+    public async Task<Result<ICollection<GetProductSimple>>> GetProducts(CancellationToken cancellationToken)
+    {
+        var query = new GetProductsQuery();
+        var response = await _bus.SendCommand(query, cancellationToken);
+        return response.Match<Result<ICollection<GetProductSimple>>>(
+            products => products.Select(product => _mapper.ProductToProductOutput(product)).ToList(),
+            error => error);
+    }
+
+
 }

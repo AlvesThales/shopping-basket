@@ -11,8 +11,8 @@ public class CreateBasketItemOutput
     public decimal UnitPrice { get; set; }
     public int Amount { get; set; }
     public decimal TotalDiscount { get; set; }
-    public decimal ItemTotalOriginalPrice => UnitPrice * Amount;
-    public decimal ItemTotalDiscountedPrice => ItemTotalOriginalPrice - TotalDiscount;
+    public decimal OriginalPrice => UnitPrice * Amount;
+    public decimal DiscountedPrice => OriginalPrice - TotalDiscount;
     
     public CreateBasketItemOutput()
     {

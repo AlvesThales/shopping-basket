@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using ShoppingBasket.Domain.Common;
+﻿using ShoppingBasket.Domain.Common;
 
 namespace ShoppingBasket.Domain.Entities;
 

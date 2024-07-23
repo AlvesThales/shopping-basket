@@ -6,25 +6,25 @@ using ShoppingBasket.Domain.Common;
 using ShoppingBasket.Domain.Common.Interfaces;
 using ShoppingBasket.Domain.Entities;
 
-namespace ShoppingBasket.Application.Features.BasketFeature.GetBasket;
+namespace ShoppingBasket.Application.Features.BasketFeature.GetBasketById;
 
-public class GetBasketQuery: IRequest<Result<Basket>>
+public class GetBasketByIdQuery: IRequest<Result<Basket>>
 {
     public Guid Id { get; set; }
 
-    public GetBasketQuery(Guid id)
+    public GetBasketByIdQuery(Guid id)
     {
         Id = id;
     }
 }
 
-public class GetBasketQueryHandler : QueryHandler,IRequestHandler<GetBasketQuery, Result<Basket>>
+public class GetBasketByIdQueryHandler : QueryHandler,IRequestHandler<GetBasketByIdQuery, Result<Basket>>
 {
-    private readonly ILogger<GetBasketQueryHandler> _logger;
+    private readonly ILogger<GetBasketByIdQueryHandler> _logger;
     private readonly IMediatorHandler _bus;
     private readonly IBasketRepository _basketRepository;
 
-    public GetBasketQueryHandler(ILogger<GetBasketQueryHandler> logger, IUnitOfWork uow, IMediatorHandler bus,
+    public GetBasketByIdQueryHandler(ILogger<GetBasketByIdQueryHandler> logger, IUnitOfWork uow, IMediatorHandler bus,
         INotificationHandler<DomainNotification> notifications,IBasketRepository basketRepository) : base(logger,uow, bus,notifications)
     {
         _logger = logger;
@@ -32,7 +32,7 @@ public class GetBasketQueryHandler : QueryHandler,IRequestHandler<GetBasketQuery
         _basketRepository = basketRepository;
     }
     
-    public async Task<Result<Basket>> Handle(GetBasketQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Basket>> Handle(GetBasketByIdQuery request, CancellationToken cancellationToken)
     {
         var basket = await _basketRepository.GetByIdWithBasketItemsAsync(request.Id, cancellationToken);
 

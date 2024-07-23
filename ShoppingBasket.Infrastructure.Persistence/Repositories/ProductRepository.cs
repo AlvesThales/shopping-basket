@@ -1,4 +1,6 @@
-﻿using ShoppingBasket.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using ShoppingBasket.Application;
+using ShoppingBasket.Core;
 using ShoppingBasket.Application.Interfaces.Repositories;
 using ShoppingBasket.Domain.Entities;
 using ShoppingBasket.Infrastructure.Persistence.Context;
@@ -10,12 +12,10 @@ internal class ProductRepository : Repository<Product>, IProductRepository
 {
     public ProductRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
-        
     }
 
-
-    public Task<PaginatedIEnumerable<Product>> GetProducts()
+    public async Task<Result<ICollection<Product>>> GetProductsAsync(CancellationToken cancellationToken)
     {
-        return _dbSet.AddPagination(0,1);
+        return await _dbSet.ToListAsync(cancellationToken);
     }
 }
