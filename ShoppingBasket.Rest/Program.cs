@@ -7,6 +7,7 @@ using ShoppingBasket.Infrastructure;
 using OpenTelemetry.Metrics;
 using Serilog;
 using ShoppingBasket.Infrastructure.Persistence.Context;
+using ShoppingBasket.Infrastructure.Persistence.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -65,11 +66,23 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    if (context.Database.GetPendingMigrations().Any())
+    try
     {
-        context.Database.Migrate();
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
+
+        // Call the seed method
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
     }
 }
+
 
 app.Run();
