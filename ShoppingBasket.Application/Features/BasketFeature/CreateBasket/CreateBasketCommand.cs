@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using ShoppingBasket.Application.Features.Common;
+using ShoppingBasket.Application.Interfaces;
 using ShoppingBasket.Application.Interfaces.Repositories;
 using ShoppingBasket.Application.ViewModels.BasketItemViewModels;
 using ShoppingBasket.Domain.Common;
@@ -12,14 +13,14 @@ namespace ShoppingBasket.Application.Features.BasketFeature.CreateBasket;
 
 public class CreateBasketCommand : Command, IRequest<Result<Basket>>
 {
-    public string CustomerId { get; private set; }
-    public virtual ICollection<CreateBasketItemInput> BasketItems { get; private set; }
-
     public CreateBasketCommand(string customerId, ICollection<CreateBasketItemInput> basketItems)
     {
         CustomerId = customerId;
         BasketItems = basketItems;
     }
+
+    public string CustomerId { get; }
+    public virtual ICollection<CreateBasketItemInput> BasketItems { get; }
 
     public override bool IsValid()
     {
@@ -28,69 +29,55 @@ public class CreateBasketCommand : Command, IRequest<Result<Basket>>
     }
 }
 
-
 public class CreateBasketCommandHandler : CommandHandler, IRequestHandler<CreateBasketCommand, Result<Basket>>
 {
-    private readonly ILogger<CreateBasketCommandHandler> _logger;
-    private readonly IMediatorHandler _bus;
     private readonly IBasketRepository _basketRepository;
+    private readonly IMediatorHandler _bus;
+    private readonly ILogger<CreateBasketCommandHandler> _logger;
     private readonly IProductRepository _productRepository;
     private readonly UserManager<Customer> _userManager;
+    private readonly IDiscountService _discountService;
 
     public CreateBasketCommandHandler(ILogger<CreateBasketCommandHandler> logger, IUnitOfWork uow, IMediatorHandler bus,
-        INotificationHandler<DomainNotification> notifications,IBasketRepository basketRepository, IProductRepository productRepository, UserManager<Customer> userManager) : base(logger,uow, bus,notifications)
+        INotificationHandler<DomainNotification> notifications, IBasketRepository basketRepository,
+        IProductRepository productRepository, UserManager<Customer> userManager,
+        IDiscountService discountService) : base(logger, uow, bus, notifications)
     {
         _logger = logger;
         _bus = bus;
         _basketRepository = basketRepository;
         _productRepository = productRepository;
         _userManager = userManager;
+        _discountService = discountService;
     }
-    
+
     public async Task<Result<Basket>> Handle(CreateBasketCommand request, CancellationToken cancellationToken)
     {
-
-        if (!request.IsValid())
-        {
-            return NotifyValidationErrors(request);
-        }
+        if (!request.IsValid()) return NotifyValidationErrors(request);
 
         var customer = await _userManager.FindByIdAsync(request.CustomerId);
-        if (customer == null)
-        {
-            return NotifyError(GenericErrors.ErrorSaving, "Customer Not Found", ErrorTypes.BadRequest);
-        }
+        if (customer == null) return NotifyError(GenericErrors.ErrorSaving, "Customer Not Found");
 
         var basketItems = new List<BasketItem>();
 
-        foreach (var item in request.BasketItems) 
+        foreach (var item in request.BasketItems)
         {
             var product = await _productRepository.GetByIdAsync(item.ProductId);
             if (product == null)
-            {
-                return NotifyError(GenericErrors.ErrorSaving, $"Product with Id {item.ProductId} Not Found", ErrorTypes.BadRequest);
-            }
+                return NotifyError(GenericErrors.ErrorSaving, $"Product with Id {item.ProductId} Not Found");
             basketItems.Add(new BasketItem(product, product.Price, item.Amount));
         }
 
         _logger.LogDebug("Start creating a basket from customer {CustomerName}", request.CustomerId);
 
         var basket = new Basket(customer, basketItems, false, false);
-        
-        var discounts = new List<Discount>
-        {
-            new PercentageDiscount("Apples", 0.10m),
-            new MultiBuyDiscount("Soup", 2, "Bread", 0.50m)
-        };
-        
-        basket.ApplyDiscounts(discounts);
-        
+
+        _discountService.ApplyDiscounts(basket);
+
         await _basketRepository.AddAsync(basket, cancellationToken);
 
         if (!await Commit(cancellationToken))
-        {
             return NotifyError(GenericErrors.ErrorSaving, "Error while saving", ErrorTypes.ServerError);
-        }
 
         return basket;
     }

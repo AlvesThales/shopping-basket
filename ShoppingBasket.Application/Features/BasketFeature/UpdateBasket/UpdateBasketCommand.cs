@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using ShoppingBasket.Application.Features.Common;
+using ShoppingBasket.Application.Interfaces;
 using ShoppingBasket.Application.Interfaces.Repositories;
 using ShoppingBasket.Application.ViewModels.BasketItemViewModels;
 using ShoppingBasket.Domain.Common;
@@ -36,15 +37,19 @@ public class UpdateBasketCommandHandler : CommandHandler, IRequestHandler<Update
     private readonly IBasketRepository _basketRepository;
     private readonly IProductRepository _productRepository;
     private readonly UserManager<Customer> _userManager;
+    private readonly IDiscountService _discountService;
+
 
     public UpdateBasketCommandHandler(ILogger<UpdateBasketCommandHandler> logger, IUnitOfWork uow, IMediatorHandler bus,
-        INotificationHandler<DomainNotification> notifications,IBasketRepository basketRepository, IProductRepository productRepository, UserManager<Customer> userManager) : base(logger,uow, bus,notifications)
+        INotificationHandler<DomainNotification> notifications,IBasketRepository basketRepository, IProductRepository productRepository,
+        UserManager<Customer> userManager, IDiscountService discountService) : base(logger,uow, bus,notifications)
     {
         _logger = logger;
         _bus = bus;
         _basketRepository = basketRepository;
         _productRepository = productRepository;
         _userManager = userManager;
+        _discountService = discountService;
     }
     
     public async Task<Result<Basket>> Handle(UpdateBasketCommand request, CancellationToken cancellationToken)
@@ -78,13 +83,7 @@ public class UpdateBasketCommandHandler : CommandHandler, IRequestHandler<Update
         {
             basket.UpdateBasketItems(basketItems);
             
-            var discounts = new List<Discount>
-            {
-                new PercentageDiscount("Apples", 0.10m),
-                new MultiBuyDiscount("Soup", 2, "Bread", 0.50m)
-            };
-        
-            basket.ApplyDiscounts(discounts);
+            _discountService.ApplyDiscounts(basket);
         }
         catch (Exception ex)
         {
